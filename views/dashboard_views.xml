@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard Form View -->
+    <record id="view_property_dashboard_form" model="ir.ui.view">
+        <field name="name">property.dashboard.form</field>
+        <field name="model">property.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Property Management Dashboard" create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="o_dashboard">
+                        <h1 class="text-center mb-4">Property Management Dashboard</h1>
+                        
+                        <!-- Key Performance Indicators -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h3 class="text-primary">Overall Statistics</h3>
+                            </div>
+                            <div class="col-3">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h4 class="text-success"><field name="total_properties"/></h4>
+                                        <p>Total Properties</p>
+                                        <button name="action_open_properties" type="object" class="btn btn-sm btn-outline-primary">View All</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h4 class="text-info"><field name="total_rooms"/></h4>
+                                        <p>Total Rooms</p>
+                                        <button name="action_open_rooms" type="object" class="btn btn-sm btn-outline-primary">View All</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h4 class="text-success"><field name="occupied_rooms"/></h4>
+                                        <p>Occupied Rooms</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h4 class="text-warning"><field name="vacant_rooms"/></h4>
+                                        <p>Vacant Rooms</p>
+                                        <button name="action_open_vacant_rooms" type="object" class="btn btn-sm btn-outline-primary">View Vacant</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Occupancy Rate -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h3>Occupancy Rate</h3>
+                                        <h2 class="text-primary"><field name="occupancy_rate" widget="percentage"/></h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h3>Active Tenants</h3>
+                                        <h2 class="text-success"><field name="total_tenants"/></h2>
+                                        <button name="action_open_tenants" type="object" class="btn btn-sm btn-outline-primary">View All</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Daily Stats -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h3 class="text-primary">Today's Statistics</h3>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4><field name="today_collections" widget="monetary"/></h4>
+                                        <p>Today's Collections</p>
+                                        <small class="text-muted"><field name="today_collections_count"/> transactions</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4><field name="today_new_tenants"/></h4>
+                                        <p>New Tenants Today</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4><field name="today_vacant_rooms"/></h4>
+                                        <p>Currently Vacant</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Stats -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h3 class="text-primary">This Week</h3>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4><field name="week_collections" widget="monetary"/></h4>
+                                        <p>Week Collections</p>
+                                        <small class="text-muted"><field name="week_collections_count"/> transactions</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4><field name="week_new_tenants"/></h4>
+                                        <p>New Tenants This Week</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Monthly Stats -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h3 class="text-primary">This Month</h3>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4><field name="month_collections" widget="monetary"/></h4>
+                                        <p>Month Collections</p>
+                                        <small class="text-muted"><field name="month_collections_count"/> transactions</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4><field name="month_new_tenants"/></h4>
+                                        <p>New Tenants</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4><field name="month_expenses" widget="monetary"/></h4>
+                                        <p>Month Expenses</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4 class="text-success">
+                                            <field name="month_collections" widget="monetary" invisible="1"/>
+                                            <field name="month_expenses" widget="monetary" invisible="1"/>
+                                            <span class="o_field_monetary">
+                                                <field name="month_collections" widget="float"/> - <field name="month_expenses" widget="float"/>
+                                            </span>
+                                        </h4>
+                                        <p>Net Income</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activities -->
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Recent Collections</h4>
+                                        <button name="action_open_collections" type="object" class="btn btn-sm btn-outline-primary float-right">View All</button>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre><field name="recent_collections" readonly="1"/></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Recent Tenants</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre><field name="recent_tenants" readonly="1"/></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dashboard Action -->
+    <record id="action_property_dashboard" model="ir.actions.act_window">
+        <field name="name">Property Dashboard</field>
+        <field name="res_model">property.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_property_dashboard_form"/>
+        <field name="target">current</field>
+        <field name="context">{'form_view_initial_mode': 'readonly'}</field>
+    </record>
+</odoo>

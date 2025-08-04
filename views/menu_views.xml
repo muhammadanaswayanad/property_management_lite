@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_property_management_root" 
+              name="Property Management" 
+              sequence="10"
+              web_icon="property_management_lite,static/description/icon.png"/>
+
+    <!-- Dashboard Menu -->
+    <menuitem id="menu_property_dashboard" 
+              name="Dashboard" 
+              parent="menu_property_management_root" 
+              action="action_property_dashboard" 
+              sequence="5"/>
+
+    <!-- Property Structure Menu -->
+    <menuitem id="menu_property_structure" 
+              name="Property Structure" 
+              parent="menu_property_management_root" 
+              sequence="10"/>
+
+    <menuitem id="menu_property_properties" 
+              name="Properties" 
+              parent="menu_property_structure" 
+              action="action_property_property" 
+              sequence="10"/>
+
+    <menuitem id="menu_property_rooms" 
+              name="Rooms" 
+              parent="menu_property_structure" 
+              action="action_property_room" 
+              sequence="20"/>
+
+    <!-- Tenant Management Menu -->
+    <menuitem id="menu_tenant_management" 
+              name="Tenant Management" 
+              parent="menu_property_management_root" 
+              sequence="20"/>
+
+    <menuitem id="menu_property_tenants" 
+              name="Tenants" 
+              parent="menu_tenant_management" 
+              action="action_property_tenant" 
+              sequence="10"/>
+
+    <!-- Daily Operations Menu -->
+    <menuitem id="menu_daily_operations" 
+              name="Daily Operations" 
+              parent="menu_property_management_root" 
+              sequence="30"/>
+
+    <menuitem id="menu_property_collections" 
+              name="Collections" 
+              parent="menu_daily_operations" 
+              action="action_property_collection" 
+              sequence="10"/>
+
+    <!-- Reports Menu -->
+    <menuitem id="menu_property_reports" 
+              name="Reports" 
+              parent="menu_property_management_root" 
+              sequence="90"/>
+
+    <menuitem id="menu_property_collection_reports" 
+              name="Collection Reports" 
+              parent="menu_property_reports" 
+              action="action_property_collection" 
+              sequence="10"/>
+
+    <menuitem id="menu_property_rooms_available" 
+              name="Available Rooms" 
+              parent="menu_property_reports" 
+              action="action_property_room_available" 
+              sequence="20"/>
+</odoo>
