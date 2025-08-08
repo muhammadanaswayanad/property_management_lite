@@ -8,6 +8,16 @@ from dateutil.relativedelta import relativedelta
 class PropertyDashboard(models.TransientModel):
     _name = 'property.dashboard'
     _description = 'Property Management Dashboard'
+    _rec_name = 'display_name'
+
+    display_name = fields.Char(string='Name', default='Property Management Dashboard', readonly=True)
+
+    def name_get(self):
+        """Return proper display name"""
+        result = []
+        for record in self:
+            result.append((record.id, 'Property Management Dashboard'))
+        return result
 
     @api.model
     def default_get(self, fields_list):

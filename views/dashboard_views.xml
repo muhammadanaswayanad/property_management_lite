@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?x    <!-- Dashboard Action -->
+    <record id="action_property_dashboard" model="ir.actions.act_window">
+        <field name="name">Property Management Dashboard</field>
+        <field name="res_model">property.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{'default_display_name': 'Property Management Dashboard'}</field>
+        <field name="res_id">1</field>
+    </record>on="1.0" encoding="utf-8"?>
 <odoo>
     
     <!-- Dashboard Action -->
