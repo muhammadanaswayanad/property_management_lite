@@ -40,7 +40,7 @@
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h2 class="text-info"><field name="total_properties"/></h2>
+                                        <h2 class="text-info"><field name="total_properties" readonly="1"/></h2>
                                         <p>Total Properties</p>
                                         <button name="action_open_properties" type="object" class="btn btn-sm btn-outline-primary">View All</button>
                                     </div>
@@ -49,7 +49,7 @@
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h2 class="text-info"><field name="total_rooms"/></h2>
+                                        <h2 class="text-info"><field name="total_rooms" readonly="1"/></h2>
                                         <p>Total Rooms</p>
                                         <button name="action_open_rooms" type="object" class="btn btn-sm btn-outline-primary">View All</button>
                                     </div>
@@ -58,7 +58,7 @@
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h2 class="text-success"><field name="occupied_rooms"/></h2>
+                                        <h2 class="text-success"><field name="occupied_rooms" readonly="1"/></h2>
                                         <p>Occupied Rooms</p>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h2 class="text-warning"><field name="vacant_rooms"/></h2>
+                                        <h2 class="text-warning"><field name="vacant_rooms" readonly="1"/></h2>
                                         <p>Vacant Rooms</p>
                                         <button name="action_open_vacant_rooms" type="object" class="btn btn-sm btn-outline-primary">View Vacant</button>
                                     </div>
@@ -80,7 +80,7 @@
                                 <div class="card">
                                     <div class="card-body text-center">
                                         <h3>Occupancy Rate</h3>
-                                        <h2 class="text-primary"><field name="occupancy_rate" widget="percentage"/></h2>
+                                        <h2 class="text-primary"><field name="occupancy_rate" widget="percentage" readonly="1"/></h2>
                                     </div>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                 <div class="card">
                                     <div class="card-body text-center">
                                         <h3>Active Tenants</h3>
-                                        <h2 class="text-success"><field name="total_tenants"/></h2>
+                                        <h2 class="text-success"><field name="total_tenants" readonly="1"/></h2>
                                         <button name="action_open_tenants" type="object" class="btn btn-sm btn-outline-primary">View All</button>
                                     </div>
                                 </div>
@@ -103,25 +103,25 @@
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4><field name="today_collections" widget="monetary"/></h4>
+                                        <h4><field name="today_collections" widget="monetary" readonly="1"/></h4>
                                         <p>Today's Collections</p>
-                                        <small class="text-muted"><field name="today_collections_count"/> transactions</small>
+                                        <small class="text-muted"><field name="today_collections_count" readonly="1"/> transactions</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4><field name="today_expenses" widget="monetary"/></h4>
+                                        <h4><field name="today_expenses" widget="monetary" readonly="1"/></h4>
                                         <p>Today's Expenses</p>
-                                        <small class="text-muted"><field name="today_expenses_count"/> transactions</small>
+                                        <small class="text-muted"><field name="today_expenses_count" readonly="1"/> transactions</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4 class="text-success"><field name="today_profit" widget="monetary"/></h4>
+                                        <h4 class="text-success"><field name="today_profit" widget="monetary" readonly="1"/></h4>
                                         <p>Today's Profit</p>
                                         <small class="text-muted">Collections - Expenses</small>
                                     </div>
@@ -130,7 +130,7 @@
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4><field name="today_vacant_rooms"/></h4>
+                                        <h4><field name="today_vacant_rooms" readonly="1"/></h4>
                                         <p>Currently Vacant</p>
                                     </div>
                                 </div>
@@ -145,25 +145,25 @@
                             <div class="col-4">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4><field name="week_collections" widget="monetary"/></h4>
+                                        <h4><field name="week_collections" widget="monetary" readonly="1"/></h4>
                                         <p>Week Collections</p>
-                                        <small class="text-muted"><field name="week_collections_count"/> transactions</small>
+                                        <small class="text-muted"><field name="week_collections_count" readonly="1"/> transactions</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4><field name="week_expenses" widget="monetary"/></h4>
+                                        <h4><field name="week_expenses" widget="monetary" readonly="1"/></h4>
                                         <p>Week Expenses</p>
-                                        <small class="text-muted"><field name="week_expenses_count"/> transactions</small>
+                                        <small class="text-muted"><field name="week_expenses_count" readonly="1"/> transactions</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4 class="text-success"><field name="week_profit" widget="monetary"/></h4>
+                                        <h4 class="text-success"><field name="week_profit" widget="monetary" readonly="1"/></h4>
                                         <p>Week Profit</p>
                                         <small class="text-muted">Collections - Expenses</small>
                                     </div>
@@ -176,7 +176,7 @@
                             <div class="col-4">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4><field name="week_new_tenants"/></h4>
+                                        <h4><field name="week_new_tenants" readonly="1"/></h4>
                                         <p>New Tenants This Week</p>
                                     </div>
                                 </div>
@@ -191,16 +191,16 @@
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4><field name="month_collections" widget="monetary"/></h4>
+                                        <h4><field name="month_collections" widget="monetary" readonly="1"/></h4>
                                         <p>Month Collections</p>
-                                        <small class="text-muted"><field name="month_collections_count"/> transactions</small>
+                                        <small class="text-muted"><field name="month_collections_count" readonly="1"/> transactions</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4><field name="month_new_tenants"/></h4>
+                                        <h4><field name="month_new_tenants" readonly="1"/></h4>
                                         <p>New Tenants</p>
                                     </div>
                                 </div>
@@ -208,16 +208,16 @@
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4><field name="month_expenses" widget="monetary"/></h4>
+                                        <h4><field name="month_expenses" widget="monetary" readonly="1"/></h4>
                                         <p>Month Expenses</p>
-                                        <small class="text-muted"><field name="month_expenses_count"/> transactions</small>
+                                        <small class="text-muted"><field name="month_expenses_count" readonly="1"/> transactions</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h4 class="text-success"><field name="month_profit" widget="monetary"/></h4>
+                                        <h4 class="text-success"><field name="month_profit" widget="monetary" readonly="1"/></h4>
                                         <p>Net Income</p>
                                         <small class="text-muted">Collections - Expenses</small>
                                     </div>
@@ -234,7 +234,7 @@
                                         <button name="action_open_collections" type="object" class="btn btn-sm btn-outline-primary">View All</button>
                                     </div>
                                     <div class="card-body">
-                                        <pre style="white-space: pre-wrap;"><field name="recent_collections"/></pre>
+                                        <pre style="white-space: pre-wrap;"><field name="recent_collections" readonly="1"/></pre>
                                     </div>
                                 </div>
                             </div>
@@ -245,7 +245,7 @@
                                         <button name="action_open_tenants" type="object" class="btn btn-sm btn-outline-primary">View All</button>
                                     </div>
                                     <div class="card-body">
-                                        <pre style="white-space: pre-wrap;"><field name="recent_tenants"/></pre>
+                                        <pre style="white-space: pre-wrap;"><field name="recent_tenants" readonly="1"/></pre>
                                     </div>
                                 </div>
                             </div>
