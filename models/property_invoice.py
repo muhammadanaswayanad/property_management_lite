@@ -164,7 +164,7 @@ class PropertyInvoice(models.Model):
             'name': _('Payments'),
             'type': 'ir.actions.act_window',
             'res_model': 'property.payment',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('invoice_id', '=', self.id)],
             'context': {'default_invoice_id': self.id}
         }
