@@ -55,6 +55,7 @@ Enterprise modules like Sales, Accounting, or Website.
         
         # Views - Tenant Management
         'views/tenant_views.xml',
+        'views/agreement_views.xml',
         
         # Views - Daily Operations
         'views/collection_views.xml',

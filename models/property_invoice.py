@@ -1,5 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
+from datetime import timedelta
 
 
 class PropertyInvoice(models.Model):
@@ -110,7 +111,7 @@ class PropertyInvoice(models.Model):
     def _onchange_agreement_id(self):
         if self.agreement_id:
             # Set due date based on payment terms
-            self.due_date = self.date + fields.timedelta(days=self.agreement_id.payment_terms or 30)
+            self.due_date = self.date + timedelta(days=self.agreement_id.payment_terms or 30)
             
             # Create default invoice lines based on agreement
             lines = []
