@@ -290,6 +290,7 @@ class PropertyPayment(models.Model):
     ], string='Payment Method', required=True, default='cash', tracking=True)
     
     reference = fields.Char('Reference')
+    notes = fields.Text('Notes')
     currency_id = fields.Many2one(related='invoice_id.currency_id', store=True)
     
     state = fields.Selection([
