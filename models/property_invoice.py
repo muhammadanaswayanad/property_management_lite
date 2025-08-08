@@ -278,6 +278,7 @@ class PropertyPayment(models.Model):
     # Relations
     invoice_id = fields.Many2one('property.invoice', 'Invoice', required=True)
     tenant_id = fields.Many2one(related='invoice_id.tenant_id', store=True)
+    company_id = fields.Many2one(related='invoice_id.company_id', store=True)
     collection_id = fields.Many2one('property.collection', 'Collection')
     
     # Payment Details
