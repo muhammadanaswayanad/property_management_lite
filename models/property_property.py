@@ -115,7 +115,7 @@ class PropertyProperty(models.Model):
     def action_view_flats(self):
         return {
             'name': _('Flats'),
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'property.flat',
             'type': 'ir.actions.act_window',
             'domain': [('property_id', '=', self.id)],
@@ -125,7 +125,7 @@ class PropertyProperty(models.Model):
     def action_view_rooms(self):
         return {
             'name': _('Rooms'),
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'property.room',
             'type': 'ir.actions.act_window',
             'domain': [('property_id', '=', self.id)],
@@ -135,7 +135,7 @@ class PropertyProperty(models.Model):
     def action_view_collections(self):
         return {
             'name': _('Collections'),
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'property.collection',
             'type': 'ir.actions.act_window',
             'domain': [('property_id', '=', self.id)],

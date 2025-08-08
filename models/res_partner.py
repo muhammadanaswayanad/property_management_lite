@@ -42,7 +42,7 @@ class ResPartner(models.Model):
     def action_view_properties(self):
         return {
             'name': 'Properties',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'property.property',
             'type': 'ir.actions.act_window',
             'domain': [('landlord_id', '=', self.id)],
@@ -52,7 +52,7 @@ class ResPartner(models.Model):
     def action_view_collections(self):
         return {
             'name': 'Collections',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'property.collection',
             'type': 'ir.actions.act_window',
             'domain': [('tenant_id', '=', self.tenant_id.id)],

@@ -108,7 +108,7 @@ class PropertyFlat(models.Model):
     def action_view_rooms(self):
         return {
             'name': _('Rooms'),
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'property.room',
             'type': 'ir.actions.act_window',
             'domain': [('flat_id', '=', self.id)],

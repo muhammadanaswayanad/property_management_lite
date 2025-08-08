@@ -153,7 +153,7 @@ class PropertyRoom(models.Model):
     def action_view_collections(self):
         return {
             'name': _('Room Collections'),
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'property.collection',
             'type': 'ir.actions.act_window',
             'domain': [('room_id', '=', self.id)],

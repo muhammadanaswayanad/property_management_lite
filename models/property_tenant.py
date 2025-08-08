@@ -165,7 +165,7 @@ class PropertyTenant(models.Model):
     def action_view_agreements(self):
         return {
             'name': _('Tenant Agreements'),
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'property.agreement',
             'type': 'ir.actions.act_window',
             'domain': [('tenant_id', '=', self.id)],
@@ -175,7 +175,7 @@ class PropertyTenant(models.Model):
     def action_view_collections(self):
         return {
             'name': _('Tenant Collections'),
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'property.collection',
             'type': 'ir.actions.act_window',
             'domain': [('tenant_id', '=', self.id)],

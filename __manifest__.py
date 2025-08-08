@@ -49,6 +49,7 @@ Enterprise modules like Sales, Accounting, or Website.
         
         # Views - Base Structure
         'views/property_views.xml',
+        'views/flat_views.xml',
         'views/room_views.xml',
         
         # Views - Tenant Management

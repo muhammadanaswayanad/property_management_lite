@@ -25,11 +25,17 @@
               action="action_property_property" 
               sequence="10"/>
 
+    <menuitem id="menu_property_flats" 
+              name="Flats" 
+              parent="menu_property_structure" 
+              action="action_property_flat" 
+              sequence="20"/>
+
     <menuitem id="menu_property_rooms" 
               name="Rooms" 
               parent="menu_property_structure" 
               action="action_property_room" 
-              sequence="20"/>
+              sequence="30"/>
 
     <!-- Tenant Management Menu -->
     <menuitem id="menu_tenant_management" 
