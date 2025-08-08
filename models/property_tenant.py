@@ -10,7 +10,9 @@ class PropertyTenant(models.Model):
 
     # Basic Information
     name = fields.Char('Full Name', required=True, tracking=True)
+    partner_id = fields.Many2one('res.partner', 'Related Contact', ondelete='cascade')
     mobile = fields.Char('Mobile Number', required=True, tracking=True)
+    phone = fields.Char('Phone Number')
     email = fields.Char('Email')
     nationality = fields.Many2one('res.country', 'Nationality')
     
@@ -172,6 +174,41 @@ class PropertyTenant(models.Model):
             'context': {'default_tenant_id': self.id}
         }
     
+    @api.model
+    def create(self, vals):
+        # Create or link to partner
+        if not vals.get('partner_id'):
+            partner_vals = {
+                'name': vals.get('name'),
+                'phone': vals.get('mobile'),
+                'email': vals.get('email'),
+                'is_company': False,
+                'customer_rank': 1,
+            }
+            partner = self.env['res.partner'].create(partner_vals)
+            vals['partner_id'] = partner.id
+        
+        return super(PropertyTenant, self).create(vals)
+    
+    def write(self, vals):
+        # Sync changes to partner
+        result = super(PropertyTenant, self).write(vals)
+        
+        for record in self:
+            if record.partner_id:
+                partner_vals = {}
+                if 'name' in vals:
+                    partner_vals['name'] = vals['name']
+                if 'mobile' in vals:
+                    partner_vals['phone'] = vals['mobile']
+                if 'email' in vals:
+                    partner_vals['email'] = vals['email']
+                
+                if partner_vals:
+                    record.partner_id.write(partner_vals)
+        
+        return result
+
     def action_view_collections(self):
         return {
             'name': _('Tenant Collections'),

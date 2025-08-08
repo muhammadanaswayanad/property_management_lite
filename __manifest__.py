@@ -43,6 +43,7 @@ Enterprise modules like Sales, Accounting, or Website.
         
         # Data
         'data/property_data.xml',
+        'data/sequences.xml',
         
         # Views - Dashboard
         'views/dashboard_views.xml',
@@ -57,6 +58,14 @@ Enterprise modules like Sales, Accounting, or Website.
         
         # Views - Daily Operations
         'views/collection_views.xml',
+        'views/expense_views.xml',
+        'views/invoice_views.xml',
+        
+        # Reports (must come before email templates that reference them)
+        'reports/invoice_reports.xml',
+        
+        # Email Templates (must come after reports)
+        'data/email_templates.xml',
         
         # Menus
         'views/menu_views.xml',

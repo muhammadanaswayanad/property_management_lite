@@ -44,6 +44,17 @@ class PropertyAgreement(models.Model):
     ], string='Payment Frequency', required=True, default='monthly')
     
     payment_day = fields.Integer('Payment Day of Month', default=1, help="Day of month when rent is due")
+    payment_terms = fields.Integer('Payment Terms (Days)', default=30, help="Number of days to pay invoice")
+    
+    # Invoicing Automation
+    auto_generate_invoices = fields.Boolean('Auto Generate Invoices', default=True, 
+                                          help="Automatically generate monthly invoices")
+    auto_post_invoices = fields.Boolean('Auto Post Invoices', default=False,
+                                      help="Automatically post generated invoices")
+    invoice_day = fields.Integer('Invoice Generation Day', default=1, 
+                               help="Day of month to generate invoice")
+    advance_invoice_days = fields.Integer('Advance Invoice Days', default=5,
+                                        help="Generate invoice X days before due date")
     
     # Status
     state = fields.Selection([

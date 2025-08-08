@@ -61,6 +61,12 @@
               action="action_property_collection" 
               sequence="10"/>
 
+    <menuitem id="menu_property_expenses" 
+              name="Expenses" 
+              parent="menu_daily_operations" 
+              action="action_property_expense" 
+              sequence="20"/>
+
     <!-- Reports Menu -->
     <menuitem id="menu_property_reports" 
               name="Reports" 

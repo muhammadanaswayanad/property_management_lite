@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Invoice Report -->
+    <record id="action_report_property_invoice" model="ir.actions.report">
+        <field name="name">Property Invoice</field>
+        <field name="model">property.invoice</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">property_management_lite.report_property_invoice</field>
+        <field name="report_file">property_management_lite.report_property_invoice</field>
+        <field name="binding_model_id" ref="model_property_invoice"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Invoice Report Template -->
+    <template id="report_property_invoice">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        
+                        <!-- Invoice Header -->
+                        <div class="row">
+                            <div class="col-6">
+                                <h2>
+                                    <span t-if="o.state == 'draft'">Draft Invoice</span>
+                                    <span t-else="">Invoice</span>
+                                </h2>
+                            </div>
+                            <div class="col-6 text-right">
+                                <h3 t-field="o.name" class="mt0"/>
+                            </div>
+                        </div>
+
+                        <!-- Invoice Info -->
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <strong>Invoice To:</strong><br/>
+                                <div t-field="o.tenant_id.name"/>
+                                <div t-field="o.tenant_id.phone"/>
+                                <div t-field="o.tenant_id.email"/>
+                                <div t-if="o.tenant_id.id_number">
+                                    ID: <span t-field="o.tenant_id.id_number"/>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Invoice Date:</strong></td>
+                                        <td><span t-field="o.date"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Due Date:</strong></td>
+                                        <td><span t-field="o.due_date"/></td>
+                                    </tr>
+                                    <tr t-if="o.period_from and o.period_to">
+                                        <td><strong>Period:</strong></td>
+                                        <td><span t-field="o.period_from"/> to <span t-field="o.period_to"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Property:</strong></td>
+                                        <td><span t-field="o.property_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Room:</strong></td>
+                                        <td><span t-field="o.room_id.name"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Invoice Lines -->
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Description</th>
+                                    <th class="text-right">Qty</th>
+                                    <th class="text-right">Unit Price</th>
+                                    <th class="text-right">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="invoice_tbody">
+                                <t t-foreach="o.invoice_line_ids" t-as="line">
+                                    <tr>
+                                        <td><span t-field="line.name"/></td>
+                                        <td class="text-right">
+                                            <span t-field="line.quantity"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.price_subtotal" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Totals -->
+                        <div class="row">
+                            <div class="col-6"/>
+                            <div class="col-6">
+                                <table class="table table-sm">
+                                    <tr class="border-black">
+                                        <td><strong>Subtotal</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="o.amount_tax">
+                                        <td>Taxes</td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_tax" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-black o_total">
+                                        <td><strong>Total</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="o.amount_paid">
+                                        <td>Paid</td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_paid" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="o.amount_residual">
+                                        <td><strong>Amount Due</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_residual" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Payment Information -->
+                        <div t-if="o.payment_ids" class="row mt32">
+                            <div class="col-12">
+                                <h4>Payment History</h4>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Method</th>
+                                            <th>Reference</th>
+                                            <th class="text-right">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.payment_ids.filtered(lambda p: p.state == 'posted')" t-as="payment">
+                                            <tr>
+                                                <td><span t-field="payment.date"/></td>
+                                                <td><span t-field="payment.payment_method"/></td>
+                                                <td><span t-field="payment.reference"/></td>
+                                                <td class="text-right">
+                                                    <span t-field="payment.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div t-if="o.notes" class="row mt32">
+                            <div class="col-12">
+                                <h4>Terms and Conditions</h4>
+                                <p t-field="o.notes"/>
+                            </div>
+                        </div>
+
+                        <!-- QR Code for Online Payment (if configured) -->
+                        <div class="row mt32" t-if="o.company_id.qr_code">
+                            <div class="col-12 text-center">
+                                <p><strong>Scan to Pay Online:</strong></p>
+                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.name, 150, 150)" style="width:150px;height:150px"/>
+                            </div>
+                        </div>
+
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Receipt Report for Payments -->
+    <record id="action_report_property_receipt" model="ir.actions.report">
+        <field name="name">Payment Receipt</field>
+        <field name="model">property.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">property_management_lite.report_property_receipt</field>
+        <field name="report_file">property_management_lite.report_property_receipt</field>
+        <field name="binding_model_id" ref="model_property_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Receipt Template -->
+    <template id="report_property_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        
+                        <!-- Receipt Header -->
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2>Payment Receipt</h2>
+                                <h3 t-field="o.name" class="mt0"/>
+                            </div>
+                        </div>
+
+                        <!-- Receipt Info -->
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <strong>Received From:</strong><br/>
+                                <div t-field="o.tenant_id.name"/>
+                                <div t-field="o.tenant_id.phone"/>
+                                <div t-field="o.tenant_id.email"/>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Payment Date:</strong></td>
+                                        <td><span t-field="o.date"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Payment Method:</strong></td>
+                                        <td><span t-field="o.payment_method"/></td>
+                                    </tr>
+                                    <tr t-if="o.reference">
+                                        <td><strong>Reference:</strong></td>
+                                        <td><span t-field="o.reference"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Invoice:</strong></td>
+                                        <td><span t-field="o.invoice_id.name"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Payment Amount -->
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="alert alert-success">
+                                    <h3>Amount Received: <span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Property Details -->
+                        <div class="row mt32">
+                            <div class="col-12">
+                                <h4>Property Details</h4>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Property:</strong></td>
+                                        <td><span t-field="o.invoice_id.property_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Room:</strong></td>
+                                        <td><span t-field="o.invoice_id.room_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="o.invoice_id.period_from">
+                                        <td><strong>Period:</strong></td>
+                                        <td><span t-field="o.invoice_id.period_from"/> to <span t-field="o.invoice_id.period_to"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="row mt32">
+                            <div class="col-12 text-center">
+                                <p>Thank you for your payment!</p>
+                                <p><small>This is a computer generated receipt.</small></p>
+                            </div>
+                        </div>
+
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

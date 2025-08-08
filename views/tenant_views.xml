@@ -54,7 +54,9 @@
                     <group>
                         <group name="basic_info">
                             <field name="mobile"/>
+                            <field name="phone"/>
                             <field name="email"/>
+                            <field name="partner_id" readonly="1"/>
                             <field name="nationality"/>
                             <field name="current_room_id" readonly="1"/>
                         </group>

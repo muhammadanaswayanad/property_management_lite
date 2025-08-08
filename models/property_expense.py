@@ -19,11 +19,18 @@ class PropertyExpense(models.Model):
     
     # Expense Details
     expense_type = fields.Selection([
+        ('dewa', 'DEWA (Electricity & Water)'),
         ('maintenance', 'Maintenance'),
-        ('repair', 'Repair'),
-        ('utility', 'Utility Bills'),
+        ('plumbing', 'Plumbing Items'),
+        ('electrical', 'Electrical Items'),
+        ('paint', 'Paint'),
+        ('ac', 'A.C (Air Conditioning)'),
+        ('labor', 'Labor'),
         ('cleaning', 'Cleaning'),
         ('security', 'Security'),
+        ('staff_payment', 'Staff Payment'),
+        ('repair', 'Repair'),
+        ('utility', 'Other Utility Bills'),
         ('insurance', 'Insurance'),
         ('tax', 'Property Tax'),
         ('commission', 'Agent Commission'),

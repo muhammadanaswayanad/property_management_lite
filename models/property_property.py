@@ -79,7 +79,8 @@ class PropertyProperty(models.Model):
             rooms = record.flat_ids.mapped('room_ids')
             record.occupied_rooms = len(rooms.filtered(lambda r: r.status == 'occupied'))
             record.vacant_rooms = len(rooms.filtered(lambda r: r.status == 'vacant'))
-            record.occupancy_rate = (record.occupied_rooms / record.total_rooms * 100) if record.total_rooms > 0 else 0
+            # Calculate as decimal (0.0 to 1.0) since view uses percentage widget
+            record.occupancy_rate = (record.occupied_rooms / record.total_rooms) if record.total_rooms > 0 else 0
     
     @api.depends('flat_ids.room_ids.rent_amount', 'expense_ids.amount')
     def _compute_financial_summary(self):
