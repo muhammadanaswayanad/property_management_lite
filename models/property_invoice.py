@@ -80,14 +80,13 @@ class PropertyInvoice(models.Model):
     @api.depends('invoice_line_ids.price_total')
     def _compute_amounts(self):
         for invoice in self:
-            amount_untaxed = amount_tax = 0.0
+            amount_total = 0.0
             for line in invoice.invoice_line_ids:
-                amount_untaxed += line.price_subtotal
-                amount_tax += line.price_tax
+                amount_total += line.price_subtotal
             
-            invoice.amount_untaxed = amount_untaxed
-            invoice.amount_tax = amount_tax
-            invoice.amount_total = amount_untaxed + amount_tax
+            invoice.amount_untaxed = amount_total
+            invoice.amount_tax = 0.0
+            invoice.amount_total = amount_total
             invoice.amount_residual = invoice.amount_total - invoice.amount_paid
 
     @api.depends('amount_total', 'amount_paid')
@@ -251,27 +250,18 @@ class PropertyInvoiceLine(models.Model):
     name = fields.Text('Description', required=True)
     quantity = fields.Float('Quantity', default=1.0, required=True)
     price_unit = fields.Monetary('Unit Price', required=True, currency_field='currency_id')
-    tax_ids = fields.Many2many('account.tax', 'property_invoice_line_tax_rel', 'line_id', 'tax_id', 'Taxes')
     
     # Computed fields
     currency_id = fields.Many2one(related='invoice_id.currency_id', store=True)
     price_subtotal = fields.Monetary('Subtotal', compute='_compute_amounts', store=True, currency_field='currency_id')
-    price_tax = fields.Monetary('Tax', compute='_compute_amounts', store=True, currency_field='currency_id')
     price_total = fields.Monetary('Total', compute='_compute_amounts', store=True, currency_field='currency_id')
 
-    @api.depends('quantity', 'price_unit', 'tax_ids')
+    @api.depends('quantity', 'price_unit')
     def _compute_amounts(self):
         for line in self:
             price = line.price_unit * line.quantity
-            if line.tax_ids:
-                taxes = line.tax_ids.compute_all(price, line.currency_id, 1, product=None, partner=line.invoice_id.tenant_id.partner_id)
-                line.price_subtotal = taxes['total_excluded']
-                line.price_tax = taxes['total_included'] - taxes['total_excluded']
-                line.price_total = taxes['total_included']
-            else:
-                line.price_subtotal = price
-                line.price_tax = 0.0
-                line.price_total = price
+            line.price_subtotal = price
+            line.price_total = price
 
 
 class PropertyPayment(models.Model):

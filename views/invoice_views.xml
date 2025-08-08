@@ -87,7 +87,6 @@
                                     <field name="name"/>
                                     <field name="quantity"/>
                                     <field name="price_unit" widget="monetary"/>
-                                    <field name="tax_ids" widget="many2many_tags"/>
                                     <field name="price_subtotal" widget="monetary"/>
                                     <field name="currency_id" invisible="1"/>
                                 </list>
