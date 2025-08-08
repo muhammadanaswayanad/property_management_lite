@@ -3,7 +3,7 @@
     <!-- Main Menu -->
     <menuitem id="menu_property_management_root" 
               name="Property Management" 
-              sequence="10"
+              sequence="1"
               web_icon="property_management_lite,static/description/icon.png"/>
 
     <!-- Dashboard Menu -->
