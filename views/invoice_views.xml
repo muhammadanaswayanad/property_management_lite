@@ -1,144 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-    <!-- Invoice Views -->
-    <!-- <record id="view_property_invoice_tree" model="ir.ui.view">
-        <field name="name">property.invoice.tree</field>
-        <field name="model">property.invoice</field>
-        <field name="arch" type="xml">
-            <list decoration-info="state == 'draft'" decoration-warning="state == 'posted'" decoration-success="state == 'paid'" decoration-muted="state == 'cancelled'">
-                <field name="name"/>
-                <field name="date"/>
-                <field name="due_date"/>
-                <field name="tenant_id"/>
-                <field name="property_id"/>
-                <field name="room_id"/>
-                <field name="invoice_type"/>
-                <field name="amount_total" widget="monetary"/>
-                <field name="amount_residual" widget="monetary"/>
-                <field name="state" widget="badge"/>
-                <field name="payment_state" widget="badge"/>
-                <field name="currency_id" invisible="1"/>
-            </list>
-        </field>
-    </record> -->
-
-    <!-- <record id="view_property_invoice_form" model="ir.ui.view">
-        <field name="name">property.invoice.form</field>
-        <field name="model">property.invoice</field>
-        <field name="arch" type="xml">
-            <form string="Property Invoice">
-                <header>
-                    <button name="action_post" type="object" string="Post" 
-                            class="btn-primary" invisible="state != 'draft'"/>
-                    <button name="action_register_payment" type="object" string="Register Payment" 
-                            class="btn-primary" invisible="state not in ['posted', 'partial']"/>
-                    <button name="action_print_invoice" type="object" string="Print Invoice" 
-                            class="btn-secondary" invisible="state == 'draft'"/>
-                    <button name="action_send_invoice" type="object" string="Send by Email" 
-                            class="btn-secondary" invisible="state == 'draft'"/>
-                    <button name="action_cancel" type="object" string="Cancel" 
-                            invisible="state in ['paid', 'cancelled']"/>
-                    <button name="action_draft" type="object" string="Reset to Draft" 
-                            invisible="state != 'cancelled'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,paid"/>
-                </header>
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_payments" type="object" class="oe_stat_button" icon="fa-money">
-                            <field name="payment_state" widget="statinfo" string="Payments"/>
-                        </button>
-                    </div>
-                    
-                    <div class="oe_title">
-                        <h1>
-                            <field name="name" readonly="1"/>
-                        </h1>
-                    </div>
-                    
-                    <group>
-                        <group>
-                            <field name="tenant_id" required="1"/>
-                            <field name="room_id" required="1"/>
-                            <field name="property_id" readonly="1"/>
-                            <field name="agreement_id"/>
-                        </group>
-                        <group>
-                            <field name="date"/>
-                            <field name="due_date"/>
-                            <field name="invoice_type"/>
-                            <field name="currency_id" invisible="1"/>
-                        </group>
-                    </group>
-                    
-                    <group string="Period" invisible="invoice_type not in ['rent', 'maintenance']">
-                        <group>
-                            <field name="period_from"/>
-                        </group>
-                        <group>
-                            <field name="period_to"/>
-                        </group>
-                    </group>
-                    
-                    <notebook>
-                        <page string="Invoice Lines">
-                            <field name="invoice_line_ids">
-                                <list editable="bottom">
-                                    <field name="name"/>
-                                    <field name="quantity"/>
-                                    <field name="price_unit" widget="monetary"/>
-                                    <field name="price_subtotal" widget="monetary"/>
-                                    <field name="currency_id" invisible="1"/>
-                                </list>
-                            </field>
-                            
-                            <group class="oe_subtotal_footer oe_right">
-                                <field name="amount_untaxed" widget="monetary"/>
-                                <field name="amount_tax" widget="monetary"/>
-                                <div class="oe_subtotal_footer_separator oe_inline">
-                                    <label for="amount_total"/>
-                                    <field name="amount_total" nolabel="1" widget="monetary"/>
-                                </div>
-                                <field name="amount_paid" widget="monetary" invisible="amount_paid == 0"/>
-                                <field name="amount_residual" widget="monetary" invisible="amount_residual == 0"/>
-                            </group>
-                        </page>
-                        
-                        <page string="Payments" invisible="state == 'draft'">
-                            <field name="payment_ids">
-                                <list>
-                                    <field name="name"/>
-                                    <field name="date"/>
-                                    <field name="payment_method"/>
-                                    <field name="reference"/>
-                                    <field name="amount" widget="monetary"/>
-                                    <field name="state" widget="badge"/>
-                                    <field name="currency_id" invisible="1"/>
-                                </list>
-                            </field>
-                        </page>
-                        
-                        <page string="Other Info">
-                            <group>
-                                <group>
-                                    <field name="company_id"/>
-                                    <field name="collection_id" readonly="1"/>
-                                </group>
-                                <group>
-                                </group>
-                            </group>
-                            
-                            <group string="Terms and Conditions">
-                                <field name="notes" nolabel="1" placeholder="Terms and conditions..."/>
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
-                <chatter/>
-            </form>
-        </field>
-    </record> -->
-
     <record id="invoice_form_inherit" model="ir.ui.view">
         <field name="name">account.move.form.inherit</field>
         <field name="model">account.move</field>
@@ -202,25 +64,6 @@
         </field>
     </record>
 
-    <!-- Payment Views -->
-    <!-- <record id="view_property_payment_tree" model="ir.ui.view">
-        <field name="name">property.payment.tree</field>
-        <field name="model">property.payment</field>
-        <field name="arch" type="xml">
-            <list decoration-info="state == 'draft'" decoration-success="state == 'posted'" decoration-muted="state == 'cancelled'">
-                <field name="name"/>
-                <field name="date"/>
-                <field name="tenant_id"/>
-                <field name="invoice_id"/>
-                <field name="payment_method"/>
-                <field name="reference"/>
-                <field name="amount" widget="monetary"/>
-                <field name="state" widget="badge"/>
-                <field name="currency_id" invisible="1"/>
-            </list>
-        </field>
-    </record> -->
-
     <record id="account_payment_form_inherit" model="ir.ui.view">
         <field name="name">account.payment.form.inherit</field>
         <field name="model">account.payment</field>
@@ -237,7 +80,12 @@
                 <field name="reference"/>
                 <field name="notes"/>
             </xpath>
-
+            <xpath expr="//field[@name='partner_bank_id'][1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_bank_id'][2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -247,16 +95,35 @@
         <field name="inherit_id" ref="account.view_account_payment_register_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[1]" position="inside">
-                <field name="tenant_id" invisible="0" options="{'no_create': True}"/>
+                <field name="tenant_id" invisible="1" options="{'no_create': True}"/>
                 <!-- <field name="room_id" invisible="1" options="{'no_create': True}" domain="[('current_tenant_id', '=', tenant_id)]"/>
                 <field name="property_id" invisible="1" options="{'no_create': True}"/>
                 <field name="agreement_id" invisible="1" options="{'no_create': True}"/> -->
             </xpath>
-            <xpath expr="//group[1]" position="inside">
+            <xpath expr="//group[1]//group[1]" position="inside">
                 <field name="reference"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_bank_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
         </field>
     </record>
+
+        <record id="account_send_payment_receipt_by_email_custom" model="ir.actions.act_window">
+            <field name="name">Send Payment Receipt</field>
+            <field name="res_model">mail.compose.message</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context" eval="{
+                'mail_post_autofollow': True,
+                'default_composition_mode': 'comment',
+                'default_template_id': ref('property_management_lite.email_template_property_receipt'),
+                'default_email_layout_xmlid': 'mail.mail_notification_light',
+            }"/>
+            <field name="binding_model_id" ref="model_account_payment"/>
+            <field name="binding_view_types">form</field>
+            <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
+        </record>
 
     <!-- Menu Items -->
     <menuitem id="menu_property_invoicing" name="Invoicing" parent="menu_property_management_root" sequence="60"/>

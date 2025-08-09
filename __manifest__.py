@@ -16,16 +16,6 @@ with features for:
 * Expense management and profit analysis
 * Real-time dashboard and analytics
 
-Community Edition Features:
-- Utilizes Odoo Community's built-in contact management
-- Standalone financial tracking without accounting integration
-- Self-contained invoicing and payment tracking
-- Document management using standard attachments
-- Role-based access control
-- Mobile-friendly daily operations interface
-
-Note: This module is designed for Odoo Community Edition and does not require
-Enterprise modules like Sales, Accounting, or Website.
     """,
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',

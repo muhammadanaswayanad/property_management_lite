@@ -6,7 +6,7 @@ from datetime import date, timedelta
 
 class AccountInvoice(models.Model):
     _inherit = 'account.move'
-    _description = 'Property Rental Invoice'
+    _description = 'Journal Entry/Invoice'
     _order = 'invoice_date desc, id desc'
 
     # name = fields.Char('Invoice Number', required=True, copy=False, readonly=True, 

@@ -19,9 +19,6 @@ access_property_tenant_manager,property.tenant.manager,model_property_tenant,gro
 access_property_agreement_user,property.agreement.user,model_property_agreement,group_property_user,1,0,0,0
 access_property_agreement_officer,property.agreement.officer,model_property_agreement,group_property_officer,1,1,1,0
 access_property_agreement_manager,property.agreement.manager,model_property_agreement,group_property_manager,1,1,1,1
-access_property_tenant_exit_user,property.tenant.exit.user,model_property_tenant_exit,group_property_user,1,0,0,0
-access_property_tenant_exit_officer,property.tenant.exit.officer,model_property_tenant_exit,group_property_officer,1,1,1,0
-access_property_tenant_exit_manager,property.tenant.exit.manager,model_property_tenant_exit,group_property_manager,1,1,1,1
 access_property_collection_user,property.collection.user,model_property_collection,group_property_user,1,1,1,0
 access_property_collection_officer,property.collection.officer,model_property_collection,group_property_officer,1,1,1,1
 access_property_collection_manager,property.collection.manager,model_property_collection,group_property_manager,1,1,1,1
@@ -31,17 +28,3 @@ access_property_invoice_manager,property.invoice.manager,model_account_move,grou
 access_property_payment_user,property.payment.user,model_account_payment,group_property_user,1,1,1,0
 access_property_payment_officer,property.payment.officer,model_account_payment,group_property_officer,1,1,1,1
 access_property_payment_manager,property.payment.manager,model_account_payment,group_property_manager,1,1,1,1
-access_property_due_tracker_user,property.due.tracker.user,model_property_due_tracker,group_property_user,1,0,0,0
-access_property_due_tracker_officer,property.due.tracker.officer,model_property_due_tracker,group_property_officer,1,1,1,0
-access_property_due_tracker_manager,property.due.tracker.manager,model_property_due_tracker,group_property_manager,1,1,1,1
-access_property_bank_transfer_user,property.bank.transfer.user,model_property_bank_transfer,group_property_user,1,0,0,0
-access_property_bank_transfer_officer,property.bank.transfer.officer,model_property_bank_transfer,group_property_officer,1,1,1,0
-access_property_bank_transfer_manager,property.bank.transfer.manager,model_property_bank_transfer,group_property_manager,1,1,1,1
-access_property_deposit_user,property.deposit.user,model_property_deposit,group_property_user,1,0,0,0
-access_property_deposit_officer,property.deposit.officer,model_property_deposit,group_property_officer,1,1,1,0
-access_property_deposit_manager,property.deposit.manager,model_property_deposit,group_property_manager,1,1,1,1
-access_property_landlord_payment_user,property.landlord.payment.user,model_property_landlord_payment,group_property_user,1,0,0,0
-access_property_landlord_payment_officer,property.landlord.payment.officer,model_property_landlord_payment,group_property_officer,1,1,1,0
-access_property_landlord_payment_manager,property.landlord.payment.manager,model_property_landlord_payment,group_property_manager,1,1,1,1
-access_property_staff_salary_user,property.staff.salary.user,model_property_staff_salary,group_property_user,1,0,0,0
-access_property_staff_salary_manager,property.staff.salary.manager,model_property_staff_salary,group_property_manager,1,1,1,1

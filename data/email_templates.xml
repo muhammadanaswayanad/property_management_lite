@@ -5,9 +5,9 @@
     <record id="email_template_property_invoice" model="mail.template">
         <field name="name">Property Invoice - Send by Email</field>
         <field name="model_id" ref="model_account_move"/>
-        <field name="subject">Invoice ${object.name} for ${object.room_id.name} - ${object.property_id.name}</field>
-        <field name="email_from">${object.company_id.email}</field>
-        <field name="partner_to">${object.tenant_id.id}</field>
+        <field name="subject">Invoice {{ object.name }} for {{ object.room_id.name }} - {{ object.property_id.name }}</field>
+        <field name="email_from">{{ object.company_id.email }}</field>
+        <field name="partner_to">{{ object.tenant_id.id }}</field>
         <field name="body_html" type="html">
             <span>
                 <p>
@@ -19,7 +19,7 @@
                     <strong>Invoice Details:</strong><br/>
                     - Invoice Date: <span t-field="object.invoice_date"/><br/>
                     - Due Date: <span t-field="object.invoice_date_due"/><br/>
-                    - Amount: <span t-field="object.amount_total"/> <span t-field="object.currency_id.symbol"/><br/>
+                    - Amount: <span t-field="object.amount_total"/><br/>
                     <t t-if="object.period_from and object.period_to">
                         - Period: <span t-field="object.period_from"/> to <span t-field="object.period_to"/><br/>
                     </t>
@@ -64,69 +64,67 @@
     <!-- Payment Receipt Email Template -->
     <record id="email_template_property_receipt" model="mail.template">
         <field name="name">Property Payment Receipt - Send by Email</field>
-        <field name="model_id" ref="model_account_move"/>
-        <field name="subject">Payment Receipt ${object.name} - Thank you for your payment</field>
-        <field name="email_to">${object.tenant_id.email}</field>
-        <field name="email_cc">${object.invoice_id.property_id.manager_id.email or ''}</field>
-        <field name="auto_delete" eval="True"/>
-        <!-- <field name="report_template_ids" eval="[(4, ref('property_management_lite.action_report_property_receipt'))]"/> -->
+        <field name="model_id" ref="model_account_payment"/>
+        <field name="subject">{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})</field>
+        <field name="partner_to">{{ object.partner_id.id }}</field>
+        <field name="email_from">{{ object.company_id.email }}</field>
         <field name="body_html" type="html">
-<div style="margin: 0px; padding: 0px;">
-    <p style="margin: 0px; padding: 0px; font-size: 13px;">
-        Dear ${object.tenant_id.name},
-        <br/><br/>
-        Thank you for your payment! We have received your payment of 
-        <strong>${object.amount} ${object.currency_id.symbol}</strong> 
-        for invoice <strong>${object.invoice_id.name}</strong>.
-        <br/><br/>
-        <strong>Payment Details:</strong><br/>
-        - Receipt Number: ${object.name}<br/>
-        - Payment Date: ${object.date}<br/>
-        - Amount Paid: ${object.amount} ${object.currency_id.symbol}<br/>
-        - Payment Method: ${dict(object._fields['payment_method'].selection).get(object.payment_method)}<br/>
-        % if object.reference:
-        - Reference: ${object.reference}<br/>
-        % endif
-        <br/>
-        <strong>Property Details:</strong><br/>
-        - Property: ${object.invoice_id.property_id.name}<br/>
-        - Room: ${object.invoice_id.room_id.name}<br/>
-        <br/>
-        
-        % if object.invoice_id.amount_residual > 0:
-        <p style="color: #f0ad4e;">
-            <strong>Remaining Balance: ${object.invoice_id.amount_residual} ${object.currency_id.symbol}</strong>
-        </p>
-        % else:
-        <p style="color: #5cb85c;">
-            <strong>Invoice Fully Paid - Thank you!</strong>
-        </p>
-        % endif
-        
-        <p>
-        Please keep this receipt for your records. The attached PDF receipt can be used for any official purposes.
-        </p>
-        
-        <p>
-        If you have any questions about this payment or your account, please don't hesitate to contact us.
-        </p>
-        
-        <br/>
-        Best regards,<br/>
-        ${object.invoice_id.company_id.name}<br/>
-        % if object.invoice_id.property_id.manager_id:
-        ${object.invoice_id.property_id.manager_id.name}<br/>
-        Property Manager<br/>
-        % endif
-        % if object.invoice_id.company_id.phone:
-        Phone: ${object.invoice_id.company_id.phone}<br/>
-        % endif
-        % if object.invoice_id.company_id.email:
-        Email: ${object.invoice_id.company_id.email}
-        % endif
-    </p>
-</div>
+            <t t-if="object.reconciled_invoice_ids or object.invoice_ids" t-set="invoice" t-value="(object.reconciled_invoice_ids or object.invoice_ids)[0]"/>
+
+            <span>
+                <p>
+                    Dear <strong><span t-field="object.tenant_id.name"/></strong>,
+                    <hr class="mb-1 mt-1"/>
+                    Thank you for your payment! We have received your payment of 
+                    <strong><span t-field="object.amount"/></strong>
+                    for invoice <strong><span t-if="invoice" t-field="invoice.name"/></strong>.
+                    <br/><br/>
+                    <strong>Payment Details:</strong><br/>
+                    - Receipt Number: <span t-field="object.name"/><br/>
+                    - Payment Date: <span t-field="object.date"/><br/>
+                    - Amount Paid: <span t-field="object.amount"/><br/>
+                    - Payment Method: <span t-field="object.payment_method_id.name"/><br/>
+                    <t t-if="object.reference">
+                        - Reference: <span t-field="object.reference"/><br/>
+                    </t>
+                    <br/>
+                    <strong>Property Details:</strong><br/>
+                    - Property: <span t-if="invoice" t-field="invoice.property_id.name"/><br/>
+                    - Room: <span t-if="invoice" t-field="invoice.room_id.name"/><br/>
+                    <br/>
+                    <t t-if="invoice">
+                        <t t-if="invoice.amount_residual &gt; 0">
+                            <p style="color: #f0ad4e;">
+                                <strong>Remaining Balance: <span t-if="invoice" t-field="invoice.amount_residual"/></strong>
+                            </p>
+                        </t>
+                        <t t-if="invoice.amount_residual == 0">
+                            <p style="color: #5cb85c;">
+                                <strong>Invoice Fully Paid - Thank you!</strong>
+                            </p>
+                        </t>
+                    </t>
+                    <p>
+                        Please keep this receipt for your records. The attached PDF receipt can be used for any official purposes.
+                    </p>
+                    <p>
+                        If you have any questions about this payment or your account, please don't hesitate to contact us.
+                    </p>
+                    <br/>
+                    Best regards,<br/>
+                    <strong><span t-field="object.company_id.name"/></strong><br/>
+                    <t t-if="object.company_id.phone">
+                        Phone: <span t-field="object.company_id.phone"/><br/>
+                    </t>
+                    <t t-if="object.company_id.email">
+                        Email: <span t-field="object.company_id.email"/>
+                    </t>
+                </p>
+            </span>
         </field>
+        <!-- Uncomment and set the correct report template if available -->
+        <field name="report_template_ids" eval="[(4, ref('property_management_lite.action_report_property_receipt'))]"/>
+        <field name="auto_delete" eval="True"/>
     </record>
 
     <!-- Overdue Invoice Reminder Template -->
@@ -152,7 +150,7 @@
         <strong>Invoice Details:</strong><br/>
         - Invoice Date: ${object.date}<br/>
         - Due Date: <span style="color: #d9534f;"><strong>${object.due_date}</strong></span><br/>
-        - Amount Due: <span style="color: #d9534f;"><strong>${object.amount_residual} ${object.currency_id.symbol}</strong></span><br/>
+        - Amount Due: <span style="color: #d9534f;"><strong>${object.amount_residual}</strong></span><br/>
         - Days Overdue: <strong>Several</strong> days<br/>
         <br/>
         
