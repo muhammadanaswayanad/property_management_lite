@@ -61,7 +61,7 @@ Enterprise modules like Sales, Accounting, or Website.
         
         # Views - Daily Operations
         'views/collection_views.xml',
-        'views/expense_views.xml',
+        # 'views/expense_views.xml',
         'views/invoice_views.xml',
         
         # Reports (must come before email templates that reference them)

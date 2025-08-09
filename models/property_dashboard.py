@@ -36,11 +36,12 @@ class PropertyDashboard(models.TransientModel):
         res['today_collections_count'] = len(collections)
         
         # Today's expenses
-        expenses = self.env['property.expense'].search([
-            ('date', '=', today),
-            ('state', 'in', ['approved', 'paid'])
+        expenses = self.env['account.move'].search([
+            ('move_type','in', ('in_invoice','in_refund')),
+            ('invoice_date', '=', today),
+            ('state', 'in', ['posted'])
         ])
-        res['today_expenses'] = sum(expenses.mapped('amount'))
+        res['today_expenses'] = sum(expenses.mapped('amount_total'))
         res['today_expenses_count'] = len(expenses)
         res['today_profit'] = res['today_collections'] - res['today_expenses']
         
@@ -66,12 +67,13 @@ class PropertyDashboard(models.TransientModel):
         res['week_collections_count'] = len(week_collections)
         
         # Week expenses
-        week_expenses = self.env['property.expense'].search([
-            ('date', '>=', week_start),
-            ('date', '<=', today),
-            ('state', 'in', ['approved', 'paid'])
+        week_expenses = self.env['account.move'].search([
+            ('move_type','in', ('in_invoice','in_refund')),
+            ('invoice_date', '>=', week_start),
+            ('invoice_date', '<=', today),
+            ('state', 'in', ['posted'])
         ])
-        res['week_expenses'] = sum(week_expenses.mapped('amount'))
+        res['week_expenses'] = sum(week_expenses.mapped('amount_total'))
         res['week_expenses_count'] = len(week_expenses)
         res['week_profit'] = res['week_collections'] - res['week_expenses']
         
@@ -94,12 +96,13 @@ class PropertyDashboard(models.TransientModel):
         res['month_collections_count'] = len(month_collections)
         
         # Month expenses
-        month_expenses = self.env['property.expense'].search([
-            ('date', '>=', month_start),
-            ('date', '<=', today),
-            ('state', 'in', ['approved', 'paid'])
+        month_expenses = self.env['account.move'].search([
+            ('move_type','in', ('in_invoice','in_refund')),
+            ('invoice_date', '>=', month_start),
+            ('invoice_date', '<=', today),
+            ('state', 'in', ['posted'])
         ])
-        res['month_expenses'] = sum(month_expenses.mapped('amount'))
+        res['month_expenses'] = sum(month_expenses.mapped('amount_total'))
         res['month_expenses_count'] = len(month_expenses)
         res['month_profit'] = res['month_collections'] - res['month_expenses']
         

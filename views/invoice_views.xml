@@ -144,30 +144,35 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_id']" position="attributes">
-                <attribute name="readonly">1</attribute>
-                <attribute name="force_save">1</attribute>
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//label[@for='partner_id'][1]" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
             <xpath expr="//group[1]//group[1]" position="inside">
                 <!-- <group> -->
-                    <field name="tenant_id" required="1" options="{'no_create': True}"/>
-                    <field name="room_id" required="1" options="{'no_create': True}" domain="[('current_tenant_id', '=', tenant_id)]"/>
-                    <field name="property_id" readonly="1" options="{'no_create': True}"/>
-                    <field name="agreement_id" required="1" options="{'no_create': True}"/>
+                    <field name="tenant_id" readonly="1" force_save="1" options="{'no_create': True}" invisible="move_type not in ('out_invoice','out_refund')"/>
+                    <field name="property_id" options="{'no_create': True}"/>
+                    <field name="room_id" options="{'no_create': True}"/>
+                    <field name="agreement_id" options="{'no_create': True}" domain="[('room_id','=',room_id)]" invisible="move_type not in ('out_invoice','out_refund')"/>
                 <!-- </group> -->
                 <!-- <group> -->
-                    <field name="invoice_type" required="1"/>
-                    <field name="period_from" required="1"/>
-                    <field name="period_to" required="1"/>
+                    <field name="invoice_type" invisible="move_type not in ('out_invoice','out_refund')"/>
+                    <field name="period_from" invisible="move_type not in ('out_invoice','out_refund')"/>
+                    <field name="period_to" invisible="move_type not in ('out_invoice','out_refund')"/>
                     <field name="ref"/>
                 <!-- </group> -->
             </xpath>
             <xpath expr="//page[@name='other_info']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='aml_tab']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_bank_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='journal_div']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='account_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
             </xpath>
         </field>
     </record>

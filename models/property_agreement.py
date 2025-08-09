@@ -26,7 +26,24 @@ class PropertyAgreement(models.Model):
     deposit_amount = fields.Monetary('Security Deposit', currency_field='currency_id', tracking=True)
     token_money = fields.Monetary('Token Money', currency_field='currency_id')
     extra_charges = fields.Monetary('Extra Charges', currency_field='currency_id')
-    
+
+    invoice_ids = fields.One2many('account.move', 'agreement_id', 'Invoices')
+    invoices_count = fields.Integer('Invoices Count', compute='_compute_invoices_count',)
+
+    def _compute_invoices_count(self):
+        for agreement in self:
+            agreement.invoices_count = len(agreement.invoice_ids.filtered(lambda inv: inv.move_type in ('out_invoice', 'out_refund')))
+
+    def action_view_invoices(self):
+        return {
+            'view_mode': 'form',
+            'type': 'ir.actions.act_window',
+            'name': 'Invoices',
+            'view_mode': 'list,form',
+            'res_model': 'account.move',
+            'domain': [('id', 'in', self.invoice_ids.ids), ('move_type', 'in', ('out_invoice', 'out_refund'))],
+        }
+
     # Payment Terms
     payment_method = fields.Selection([
         ('cash', 'Cash'),

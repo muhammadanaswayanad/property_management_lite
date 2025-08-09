@@ -8,6 +8,7 @@
         <field name="report_name">property_management_lite.report_property_invoice</field>
         <field name="report_file">property_management_lite.report_property_invoice</field>
         <field name="binding_model_id" ref="model_account_move"/>
+        <field name="print_report_name">('Invoice - ' + object.name)</field>
         <field name="binding_type">report</field>
     </record>
 
@@ -365,6 +366,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">property_management_lite.report_property_receipt</field>
         <field name="report_file">property_management_lite.report_property_receipt</field>
+        <field name="print_report_name">('Payment Receipt - ' + object.name)</field>
         <field name="binding_model_id" ref="model_account_payment"/>
         <field name="binding_type">report</field>
     </record>
@@ -409,8 +411,8 @@
                                         </div>
                                         <div class="col-6">
                                             <p class="mb-1" t-if="o.tenant_id.id_passport"><strong>ID:</strong> <span t-field="o.tenant_id.id_passport"/></p>
-                                            <p class="mb-1"><strong>Property:</strong> <span t-field="invoice.property_id.name"/></p>
-                                            <p class="mb-1"><strong>Room:</strong> <span t-field="invoice.room_id.name"/></p>
+                                            <p class="mb-1"><strong>Property:</strong> <span t-if="invoice" t-field="invoice.property_id.name"/></p>
+                                            <p class="mb-1"><strong>Room:</strong> <span t-if="invoice" t-field="invoice.room_id.name"/></p>
                                         </div>
                                     </div>
                                 </div>
@@ -440,7 +442,7 @@
                                             <td class="font-weight-bold" style="background-color: #ecf0f1;"><i class="fa fa-hashtag"/> Reference:</td>
                                             <td><span t-field="o.reference"/></td>
                                             <td class="font-weight-bold" style="background-color: #ecf0f1;"><i class="fa fa-file-text"/> For Invoice:</td>
-                                            <td><span t-field="invoice.name"/></td>
+                                            <td><span t-if="invoice" t-field="invoice.name" /></td>
                                         </tr>
                                         <tr t-if="o.notes">
                                             <td class="font-weight-bold" style="background-color: #ecf0f1;"><i class="fa fa-sticky-note"/> Notes:</td>
@@ -467,16 +469,16 @@
                                     <tbody>
                                         <tr>
                                             <td class="text-center">
-                                                <span t-field="invoice.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                <span t-if="invoice" t-field="invoice.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="invoice.amount_paid - o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                <span t-if="invoice" t-esc="invoice.amount_paid - o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
                                             </td>
                                             <td class="text-center font-weight-bold" style="background-color: #d5f4e6;">
-                                                <span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                <span t-if="invoice" t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-field="invoice.amount_residual" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                <span t-if="invoice" t-field="invoice.amount_residual" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
                                             </td>
                                         </tr>
                                     </tbody>

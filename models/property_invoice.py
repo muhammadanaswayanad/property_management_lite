@@ -17,16 +17,20 @@ class AccountInvoice(models.Model):
     # invoice_date_due = fields.Date('Due Date', required=True, tracking=True)
     
     # Relations
-    tenant_id = fields.Many2one('property.tenant', 'Tenant', required=True, tracking=True)
+    tenant_id = fields.Many2one('property.tenant', 'Tenant', tracking=True)
+    @api.onchange('partner_id')
+    def _onchange_partner_id_tenant(self):
+       if self.partner_id:
+           self.tenant_id = self.partner_id.tenant_id
 
-    partner_id = fields.Many2one('res.partner', compute="_compute_partner_from_tenant", store=True, readonly=True)
-    @api.depends('tenant_id')
-    def _compute_partner_from_tenant(self):
-        for invoice in self:
-            invoice.partner_id = invoice.tenant_id.partner_id
+    room_id = fields.Many2one('property.room', 'Room', tracking=True, domain="[('property_id','=',property_id)]")
 
-    room_id = fields.Many2one('property.room', 'Room', tracking=True)
-    property_id = fields.Many2one(related='room_id.property_id', string='Property', store=True)
+    @api.onchange('property_id')
+    def _onchange_property_id(self):
+        if self.property_id:
+            self.room_id = False
+            self.agreement_id = False
+    property_id = fields.Many2one('property.property', string='Property', store=True)
     agreement_id = fields.Many2one('property.agreement', 'Agreement',)
     collection_id = fields.Many2one('property.collection', 'Collection', readonly=True)
     
@@ -176,17 +180,19 @@ class AccountInvoice(models.Model):
             # Calculate period
             period_from = invoice_date.replace(day=1)
             if invoice_date.month == 12:
-                period_to = period_from.replace(year=period_from.year + 1, month=1) - fields.timedelta(days=1)
+                period_to = period_from.replace(year=period_from.year + 1, month=1) - timedelta(days=1)
             else:
-                period_to = period_from.replace(month=period_from.month + 1) - fields.timedelta(days=1)
+                period_to = period_from.replace(month=period_from.month + 1) - timedelta(days=1)
             
             # Create invoice
             invoice = self.create({
+                'partner_id': agreement.tenant_id.partner_id.id,
                 'tenant_id': agreement.tenant_id.id,
                 'room_id': agreement.room_id.id,
                 'agreement_id': agreement.id,
                 'invoice_date': invoice_date,
-                'invoice_date_due': invoice_date + fields.timedelta(days=agreement.payment_terms or 30),
+                'invoice_date_due': invoice_date + timedelta(days=agreement.payment_terms or 30),
+                'move_type': 'out_invoice',
                 'invoice_type': 'rent',
                 'period_from': period_from,
                 'period_to': period_to,

@@ -49,23 +49,29 @@
               action="action_property_tenant" 
               sequence="10"/>
 
-    <!-- Daily Operations Menu -->
-    <menuitem id="menu_daily_operations" 
-              name="Daily Operations" 
+    <!-- Bills Menu -->
+    <menuitem id="menu_expenses_bills" 
+              name="Expenses/Bills" 
               parent="menu_property_management_root" 
               sequence="30"/>
+    <menuitem id="menu_property_expenses" 
+              name="Bills" 
+              parent="menu_expenses_bills" 
+              action="account.action_move_in_invoice" 
+              sequence="20"/>
+    <menuitem id="menu_property_payments" 
+              name="Payments" 
+              parent="menu_expenses_bills" 
+              action="account.action_account_payments_payable" 
+              sequence="30"/>
+
+    <!-- Daily Operations Menu -->
 
     <menuitem id="menu_property_collections" 
-              name="Collections" 
-              parent="menu_daily_operations" 
+              name="Daily Collections" 
+              parent="menu_property_management_root" 
               action="action_property_collection" 
               sequence="10"/>
-
-    <menuitem id="menu_property_expenses" 
-              name="Expenses" 
-              parent="menu_daily_operations" 
-              action="action_property_expense" 
-              sequence="20"/>
 
     <!-- Reports Menu -->
     <menuitem id="menu_property_reports" 
