@@ -1,6 +1,9 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+    tenant_id = fields.Many2one('property.tenant', string='Tenant', help="Link to the tenant record if this partner is a tenant.")
 
 class PropertyTenant(models.Model):
     _name = 'property.tenant'
@@ -11,11 +14,11 @@ class PropertyTenant(models.Model):
     # Basic Information
     name = fields.Char('Full Name', required=True, tracking=True)
     partner_id = fields.Many2one('res.partner', 'Related Contact', ondelete='cascade')
-    mobile = fields.Char('Mobile Number', required=True, tracking=True)
-    phone = fields.Char('Phone Number')
-    email = fields.Char('Email')
-    nationality = fields.Many2one('res.country', 'Nationality')
-    
+    mobile = fields.Char('Mobile Number', related="partner_id.mobile", store=True, readonly=False, required=True, tracking=True)
+    phone = fields.Char('Phone Number', related="partner_id.phone", store=True, readonly=False, required=True, tracking=True)
+    email = fields.Char('Email', related="partner_id.email", store=True, readonly=False, required=True, tracking=True)
+    nationality = fields.Many2one('res.country', 'Nationality', related="partner_id.country_id", store=True, readonly=False)
+
     # Identification
     id_passport = fields.Char('ID/Passport Number', required=True, tracking=True)
     id_type = fields.Selection([
@@ -99,24 +102,7 @@ class PropertyTenant(models.Model):
         for record in self:
             record.total_paid = sum(record.collection_ids.mapped('amount_collected'))
             record.last_payment_date = max(record.collection_ids.mapped('date')) if record.collection_ids else False
-    
-    @api.model
-    def create(self, vals):
-        # Create corresponding res.partner
-        if not vals.get('partner_id'):
-            partner_vals = {
-                'name': vals.get('name'),
-                'mobile': vals.get('mobile'),
-                'email': vals.get('email'),
-                'is_company': False,
-                'customer_rank': 1,
-                'category_id': [(4, self.env.ref('property_management_lite.partner_category_tenant').id)],
-            }
-            partner = self.env['res.partner'].create(partner_vals)
-            vals['partner_id'] = partner.id
-        
-        return super().create(vals)
-    
+
     def write(self, vals):
         # Update corresponding res.partner
         if self.partner_id:
@@ -174,21 +160,42 @@ class PropertyTenant(models.Model):
             'context': {'default_tenant_id': self.id}
         }
     
-    @api.model
-    def create(self, vals):
-        # Create or link to partner
-        if not vals.get('partner_id'):
-            partner_vals = {
-                'name': vals.get('name'),
-                'phone': vals.get('mobile'),
-                'email': vals.get('email'),
-                'is_company': False,
-                'customer_rank': 1,
+    # @api.model
+    # def create(self, vals):
+    #     # Create or link to partner
+    #     if not vals.get('partner_id'):
+    #         partner_vals = {
+    #             'name': vals.get('name'),
+    #             'phone': vals.get('mobile'),
+    #             'email': vals.get('email'),
+    #             'is_company': False,
+    #             'customer_rank': 1,
+    #         }
+    #         partner = self.env['res.partner'].create(partner_vals)
+    #         vals['partner_id'] = partner.id
+        
+    #     return super(PropertyTenant, self).create(vals)
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Create corresponding res.partner
+        for vals in vals_list:
+            if not vals.get('partner_id'):
+                partner_vals = {
+                    'name': vals.get('name'),
+                    'mobile': vals.get('mobile'),
+                    'email': vals.get('email'),
+                    'is_company': False,
+                    'customer_rank': 1,
+                    'category_id': [(4, self.env.ref('property_management_lite.partner_category_tenant').id)],
             }
             partner = self.env['res.partner'].create(partner_vals)
             vals['partner_id'] = partner.id
-        
-        return super(PropertyTenant, self).create(vals)
+        recs = super().create(vals_list)
+        for rec in recs:
+            if rec.partner_id:
+                rec.partner_id.tenant_id = rec.id
+        return recs
     
     def write(self, vals):
         # Sync changes to partner

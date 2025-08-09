@@ -2,7 +2,7 @@
 <odoo>
     
     <!-- Invoice Views -->
-    <record id="view_property_invoice_tree" model="ir.ui.view">
+    <!-- <record id="view_property_invoice_tree" model="ir.ui.view">
         <field name="name">property.invoice.tree</field>
         <field name="model">property.invoice</field>
         <field name="arch" type="xml">
@@ -21,9 +21,9 @@
                 <field name="currency_id" invisible="1"/>
             </list>
         </field>
-    </record>
+    </record> -->
 
-    <record id="view_property_invoice_form" model="ir.ui.view">
+    <!-- <record id="view_property_invoice_form" model="ir.ui.view">
         <field name="name">property.invoice.form</field>
         <field name="model">property.invoice</field>
         <field name="arch" type="xml">
@@ -125,7 +125,6 @@
                                     <field name="collection_id" readonly="1"/>
                                 </group>
                                 <group>
-                                    <!-- Reserved for future fields -->
                                 </group>
                             </group>
                             
@@ -138,39 +137,68 @@
                 <chatter/>
             </form>
         </field>
+    </record> -->
+
+    <record id="invoice_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="force_save">1</attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//label[@for='partner_id'][1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[1]//group[1]" position="inside">
+                <!-- <group> -->
+                    <field name="tenant_id" required="1" options="{'no_create': True}"/>
+                    <field name="room_id" required="1" options="{'no_create': True}" domain="[('current_tenant_id', '=', tenant_id)]"/>
+                    <field name="property_id" readonly="1" options="{'no_create': True}"/>
+                    <field name="agreement_id" required="1" options="{'no_create': True}"/>
+                <!-- </group> -->
+                <!-- <group> -->
+                    <field name="invoice_type" required="1"/>
+                    <field name="period_from" required="1"/>
+                    <field name="period_to" required="1"/>
+                    <field name="ref"/>
+                <!-- </group> -->
+            </xpath>
+            <xpath expr="//page[@name='other_info']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
     </record>
 
-    <record id="view_property_invoice_search" model="ir.ui.view">
-        <field name="name">property.invoice.search</field>
-        <field name="model">property.invoice</field>
+    <record id="view_invoice_search_inherit" model="ir.ui.view">
+        <field name="name">account.move.search.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
         <field name="arch" type="xml">
-            <search>
-                <field name="name"/>
+            <xpath expr="//field[@name='name']" position="after">
                 <field name="tenant_id"/>
                 <field name="property_id"/>
                 <field name="room_id"/>
-                <separator/>
-                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
-                <filter string="Posted" name="posted" domain="[('state', '=', 'posted')]"/>
-                <filter string="Paid" name="paid" domain="[('state', '=', 'paid')]"/>
-                <filter string="Overdue" name="overdue" domain="[('due_date', '&lt;', context_today()), ('state', 'in', ['posted', 'partial'])]"/>
+            </xpath>
+            <xpath expr="//filter[@name='draft']" position="after">
                 <separator/>
                 <filter string="This Month" name="this_month" 
-                        domain="[('date', '&gt;=', (context_today() - datetime.timedelta(days=30)))]"/>
-                <separator/>
-                <group expand="0" string="Group By">
-                    <filter string="Tenant" name="group_tenant" context="{'group_by': 'tenant_id'}"/>
-                    <filter string="Property" name="group_property" context="{'group_by': 'property_id'}"/>
-                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
-                    <filter string="Type" name="group_type" context="{'group_by': 'invoice_type'}"/>
-                    <filter string="Month" name="group_month" context="{'group_by': 'date:month'}"/>
-                </group>
-            </search>
+                        domain="[('invoice_date', '&gt;=', (context_today() - datetime.timedelta(days=30)))]"/>
+            </xpath>
+            <xpath expr="//group[1]" position="inside">
+                <filter string="Tenant" name="group_tenant" context="{'group_by': 'tenant_id'}"/>
+                <filter string="Property" name="group_property" context="{'group_by': 'property_id'}"/>
+                <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                <filter string="Type" name="group_type" context="{'group_by': 'invoice_type'}"/>
+                <filter string="Month" name="group_month" context="{'group_by': 'invoice_date:month'}"/>
+            </xpath>
         </field>
     </record>
 
     <!-- Payment Views -->
-    <record id="view_property_payment_tree" model="ir.ui.view">
+    <!-- <record id="view_property_payment_tree" model="ir.ui.view">
         <field name="name">property.payment.tree</field>
         <field name="model">property.payment</field>
         <field name="arch" type="xml">
@@ -186,105 +214,42 @@
                 <field name="currency_id" invisible="1"/>
             </list>
         </field>
-    </record>
+    </record> -->
 
-    <record id="view_property_payment_form" model="ir.ui.view">
-        <field name="name">property.payment.form</field>
-        <field name="model">property.payment</field>
+    <record id="account_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
-            <form string="Property Payment">
-                <header>
-                    <button name="action_post" type="object" string="Post" 
-                            class="btn-primary" invisible="state != 'draft'"/>
-                    <button name="action_cancel" type="object" string="Cancel" 
-                            invisible="state in ['posted', 'cancelled']"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
-                </header>
-                <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="name" readonly="1"/>
-                        </h1>
-                    </div>
-                    
-                    <group>
-                        <group>
-                            <field name="invoice_id" required="1"/>
-                            <field name="tenant_id" readonly="1"/>
-                            <field name="amount"/>
-                            <field name="currency_id" invisible="1"/>
-                        </group>
-                        <group>
-                            <field name="date"/>
-                            <field name="payment_method"/>
-                            <field name="reference"/>
-                            <field name="collection_id" readonly="1"/>
-                        </group>
-                    </group>
-                    
-                    <group string="Additional Information">
-                        <field name="notes" placeholder="Add payment notes or comments..."/>
-                    </group>
-                </sheet>
-                <chatter/>
-            </form>
+            <xpath expr="//group[1]//group[1]" position="inside">
+                <field name="collection_id"/>
+                <field name="tenant_id" invisible="0" options="{'no_create': True}"/>
+                <!-- <field name="room_id" invisible="0" options="{'no_create': True}" domain="[('current_tenant_id', '=', tenant_id)]"/>
+                <field name="property_id" invisible="0" options="{'no_create': True}"/>
+                <field name="agreement_id" invisible="0" options="{'no_create': True}"/> -->
+            </xpath>
+            <xpath expr="//group[1]//group[2]" position="inside">
+                <field name="reference"/>
+                <field name="notes"/>
+            </xpath>
+
         </field>
     </record>
 
-    <!-- Payment Wizard -->
-    <record id="view_property_payment_wizard_form" model="ir.ui.view">
-        <field name="name">property.payment.wizard.form</field>
-        <field name="model">property.payment.wizard</field>
+    <record id="view_account_payment_register_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.register.form.inherit</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
         <field name="arch" type="xml">
-            <form string="Register Payment">
-                <group>
-                    <field name="invoice_id" readonly="1"/>
-                    <field name="tenant_id" readonly="1"/>
-                    <field name="amount"/>
-                    <field name="currency_id" invisible="1"/>
-                </group>
-                <group>
-                    <field name="date"/>
-                    <field name="payment_method"/>
-                    <field name="reference"/>
-                </group>
-                <footer>
-                    <button string="Register Payment" name="action_register_payment" type="object" class="btn-primary"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
-                </footer>
-            </form>
-        </field>
-    </record>
-
-    <!-- Actions -->
-    <record id="action_property_invoice" model="ir.actions.act_window">
-        <field name="name">Property Invoices</field>
-        <field name="res_model">property.invoice</field>
-        <field name="view_mode">list,form</field>
-        <field name="view_id" ref="view_property_invoice_tree"/>
-        <field name="search_view_id" ref="view_property_invoice_search"/>
-        <field name="context">{'search_default_this_month': 1}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create your first property invoice!
-            </p>
-            <p>
-                Generate invoices for rent collection, deposits, and other charges.
-            </p>
-        </field>
-    </record>
-
-    <record id="action_property_payment" model="ir.actions.act_window">
-        <field name="name">Property Payments</field>
-        <field name="res_model">property.payment</field>
-        <field name="view_mode">list,form</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                No payments registered yet!
-            </p>
-            <p>
-                Register payments against property invoices.
-            </p>
+            <xpath expr="//group[1]" position="inside">
+                <field name="tenant_id" invisible="0" options="{'no_create': True}"/>
+                <!-- <field name="room_id" invisible="1" options="{'no_create': True}" domain="[('current_tenant_id', '=', tenant_id)]"/>
+                <field name="property_id" invisible="1" options="{'no_create': True}"/>
+                <field name="agreement_id" invisible="1" options="{'no_create': True}"/> -->
+            </xpath>
+            <xpath expr="//group[1]" position="inside">
+                <field name="reference"/>
+            </xpath>
         </field>
     </record>
 
@@ -292,9 +257,9 @@
     <menuitem id="menu_property_invoicing" name="Invoicing" parent="menu_property_management_root" sequence="60"/>
     
     <menuitem id="menu_property_invoice" name="Invoices" parent="menu_property_invoicing" 
-              action="action_property_invoice" sequence="10"/>
+              action="account.action_move_out_invoice" sequence="10"/>
     
     <menuitem id="menu_property_payment" name="Payments" parent="menu_property_invoicing" 
-              action="action_property_payment" sequence="20"/>
+              action="account.action_account_payments" sequence="20"/>
 
 </odoo>

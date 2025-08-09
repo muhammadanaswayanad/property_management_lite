@@ -35,6 +35,8 @@ Enterprise modules like Sales, Accounting, or Website.
         'contacts',
         'mail',
         'web',
+        'sale',
+        'account',
     ],
     'data': [
         # Security
@@ -44,7 +46,7 @@ Enterprise modules like Sales, Accounting, or Website.
         # Data
         'data/property_data.xml',
         'data/sequences.xml',
-        
+        'data/product.xml',
         # Views - Dashboard
         'views/dashboard_views.xml',
         

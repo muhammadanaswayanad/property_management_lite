@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="product_property_rent" model="product.template">
+            <field name="name">Monthly Rent</field>
+            <field name="type">service</field>
+            <field name="sale_ok" eval="True"/>
+        </record>
+
+        <record id="product_property_deposit" model="product.template">
+            <field name="name">Security Deposit</field>
+            <field name="type">service</field>
+            <field name="sale_ok" eval="True"/>
+        </record>
+
+        <record id="product_property_maintenance" model="product.template">
+            <field name="name">Maintenance</field>
+            <field name="type">service</field>
+            <field name="sale_ok" eval="True"/>
+        </record>
+
+        <record id="product_property_utility" model="product.template">
+            <field name="name">Utilities</field>
+            <field name="type">service</field>
+            <field name="sale_ok" eval="True"/>
+        </record>
+
+        <record id="product_property_penalty" model="product.template">
+            <field name="name">Late Fee</field>
+            <field name="type">service</field>
+            <field name="sale_ok" eval="True"/>
+        </record>
+    </data>
+</odoo>
