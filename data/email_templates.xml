@@ -61,6 +61,77 @@
         <field name="auto_delete" eval="True"/>
     </record>
 
+    <!-- Overdue Invoice Reminder Template -->
+    <record id="email_template_overdue_invoice" model="mail.template">
+        <field name="name">Overdue Invoice Reminder</field>
+        <field name="model_id" ref="model_account_move"/>
+        <field name="subject">REMINDER: Overdue Invoice {{ object.name }} - {{ object.property_id.name }}</field>
+        <field name="email_from">{{ object.company_id.email }}</field>
+        <field name="partner_to">{{ object.tenant_id.id }}</field>
+        <field name="auto_delete" eval="True"/>
+        <field name="report_template_ids" eval="[(4, ref('property_management_lite.action_report_property_invoice'))]"/>
+        <field name="body_html" type="html">
+            <span>
+                <p>
+                    Dear <strong><span t-field="object.tenant_id.name"/></strong>,
+                    <hr class="mb-1 mt-1"/>
+                    <strong style="color: #d9534f;">PAYMENT REMINDER</strong>
+                    <br/><br/>
+                    This is a friendly reminder that your invoice <strong><span t-field="object.name"/></strong>
+                    for <strong><span t-field="object.room_id.name"/></strong> at <strong><span t-field="object.property_id.name"/></strong>
+                    is now overdue.
+                    <br/><br/>
+                    <strong>Invoice Details:</strong><br/>
+                    - Invoice Date: <span t-field="object.invoice_date"/><br/>
+                    - Due Date: <span style="color: #d9534f;"><strong><span t-field="object.invoice_date_due"/></strong></span><br/>
+                    - Amount Due: <span style="color: #d9534f;"><strong><span t-field="object.amount_residual"/></strong></span><br/>
+                    <t t-if="object.period_from and object.period_to">
+                        - Period: <span t-field="object.period_from"/> to <span t-field="object.period_to"/><br/>
+                    </t>
+                    <br/>
+                    <p style="background-color: #f2dede; border: 1px solid #ebccd1; padding: 10px; border-radius: 4px;">
+                        <strong>URGENT:</strong> Please arrange payment immediately to avoid:
+                        <br/>
+                        • Late payment fees
+                        <br/>
+                        • Additional charges
+                        <br/>
+                        • Potential lease termination
+                    </p>
+                    <p>
+                        If you have already made this payment, please disregard this notice and contact us with your payment details.
+                    </p>
+                    <p>
+                        If you are experiencing financial difficulties, please contact us immediately to discuss payment arrangements.
+                    </p>
+                    <p>
+                        <strong>Payment Methods:</strong><br/>
+                        • Cash payment at property office<br/>
+                        • Bank transfer<br/>
+                        • Online payment (if available)<br/>
+                        • Cheque payment
+                    </p>
+                    <p>
+                        For immediate assistance, please contact us at <span t-out="object.company_id.phone or object.company_id.email"/>.
+                    </p>
+                    <br/>
+                    Property Management Team,<br/>
+                    <strong><span t-field="object.company_id.name"/></strong><br/>
+                    <t t-if="object.property_id.manager_id">
+                        <span t-field="object.property_id.manager_id.name"/><br/>
+                        Property Manager<br/>
+                    </t>
+                    <t t-if="object.company_id.phone">
+                        Phone: <span t-field="object.company_id.phone"/><br/>
+                    </t>
+                    <t t-if="object.company_id.email">
+                        Email: <span t-field="object.company_id.email"/>
+                    </t>
+                </p>
+            </span>
+        </field>
+    </record>
+
     <!-- Payment Receipt Email Template -->
     <record id="email_template_property_receipt" model="mail.template">
         <field name="name">Property Payment Receipt - Send by Email</field>
@@ -125,81 +196,6 @@
         <!-- Uncomment and set the correct report template if available -->
         <field name="report_template_ids" eval="[(4, ref('property_management_lite.action_report_property_receipt'))]"/>
         <field name="auto_delete" eval="True"/>
-    </record>
-
-    <!-- Overdue Invoice Reminder Template -->
-    <record id="email_template_overdue_invoice" model="mail.template">
-        <field name="name">Overdue Invoice Reminder</field>
-        <field name="model_id" ref="model_account_move"/>
-        <field name="subject">REMINDER: Overdue Invoice ${object.name} - ${object.property_id.name}</field>
-        <field name="email_to">${object.tenant_id.email}</field>
-        <field name="email_cc">${object.property_id.manager_id.email or ''}</field>
-        <field name="auto_delete" eval="True"/>
-        <!-- <field name="report_template_ids" eval="[(4, ref('property_management_lite.action_report_property_invoice'))]"/> -->
-        <field name="body_html" type="html">
-<div style="margin: 0px; padding: 0px;">
-    <p style="margin: 0px; padding: 0px; font-size: 13px;">
-        Dear ${object.tenant_id.name},
-        <br/><br/>
-        <strong style="color: #d9534f;">PAYMENT REMINDER</strong>
-        <br/><br/>
-        This is a friendly reminder that your invoice <strong>${object.name}</strong> 
-        for <strong>${object.room_id.name}</strong> at <strong>${object.property_id.name}</strong> 
-        is now overdue.
-        <br/><br/>
-        <strong>Invoice Details:</strong><br/>
-        - Invoice Date: ${object.date}<br/>
-        - Due Date: <span style="color: #d9534f;"><strong>${object.due_date}</strong></span><br/>
-        - Amount Due: <span style="color: #d9534f;"><strong>${object.amount_residual}</strong></span><br/>
-        - Days Overdue: <strong>Several</strong> days<br/>
-        <br/>
-        
-        <p style="background-color: #f2dede; border: 1px solid #ebccd1; padding: 10px; border-radius: 4px;">
-        <strong>URGENT:</strong> Please arrange payment immediately to avoid:
-        <br/>
-        • Late payment fees
-        <br/>
-        • Additional charges
-        <br/>
-        • Potential lease termination
-        </p>
-        
-        <p>
-        If you have already made this payment, please disregard this notice and contact us with your payment details.
-        </p>
-        
-        <p>
-        If you are experiencing financial difficulties, please contact us immediately to discuss payment arrangements.
-        </p>
-        
-        <p>
-        <strong>Payment Methods:</strong><br/>
-        • Cash payment at property office<br/>
-        • Bank transfer<br/>
-        • Online payment (if available)<br/>
-        • Cheque payment
-        </p>
-        
-        <p>
-        For immediate assistance, please contact us at ${object.company_id.phone or object.company_id.email}.
-        </p>
-        
-        <br/>
-        Property Management Team,<br/>
-        ${object.company_id.name}<br/>
-        % if object.property_id.manager_id:
-        ${object.property_id.manager_id.name}<br/>
-        Property Manager<br/>
-        % endif
-        % if object.company_id.phone:
-        Phone: ${object.company_id.phone}<br/>
-        % endif
-        % if object.company_id.email:
-        Email: ${object.company_id.email}
-        % endif
-    </p>
-</div>
-        </field>
     </record>
 
 </odoo>

@@ -34,37 +34,6 @@ class AccountInvoice(models.Model):
     agreement_id = fields.Many2one('property.agreement', 'Agreement',)
     collection_id = fields.Many2one('property.collection', 'Collection', readonly=True)
     
-    # Invoice Lines
-    # invoice_line_ids = fields.One2many('property.invoice.line', 'invoice_id', 'Invoice Lines')
-    
-    # Amounts
-    # currency_id = fields.Many2one('res.currency', 'Currency', 
-    #                               default=lambda self: self.env.company.currency_id)
-    # amount_untaxed = fields.Monetary('Subtotal', compute='_compute_amounts', store=True, currency_field='currency_id')
-    # amount_tax = fields.Monetary('Tax', compute='_compute_amounts', store=True, currency_field='currency_id')
-    # amount_total = fields.Monetary('Total', compute='_compute_amounts', store=True, currency_field='currency_id')
-    # amount_paid = fields.Monetary('Amount Paid', currency_field='currency_id', tracking=True)
-    # amount_residual = fields.Monetary('Amount Due', compute='_compute_amounts', store=True, currency_field='currency_id')
-    
-    # Status
-    # state = fields.Selection([
-    #     ('draft', 'Draft'),
-    #     ('posted', 'Posted'),
-    #     ('paid', 'Paid'),
-    #     ('partial', 'Partially Paid'),
-    #     ('cancelled', 'Cancelled'),
-    # ], string='Status', default='draft', tracking=True)
-    
-    # Payment Info
-    # payment_ids = fields.One2many('property.payment', 'invoice_id', 'Payments')
-    # payment_state = fields.Selection([
-    #     ('not_paid', 'Not Paid'),
-    #     ('in_payment', 'In Payment'),
-    #     ('partial', 'Partially Paid'),
-    #     ('paid', 'Paid'),
-    #     ('reversed', 'Reversed'),
-    # ], string='Payment Status', compute='_compute_payment_state', store=True)
-    
     # Additional Fields
     invoice_type = fields.Selection([
         ('rent', 'Monthly Rent'),
@@ -88,37 +57,6 @@ class AccountInvoice(models.Model):
     period_from = fields.Date('Period From', default=_default_period_from)
     period_to = fields.Date('Period To', default=_default_period_to)
     notes = fields.Text('Terms and Conditions')
-    
-    # Company Info
-    # company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
-    
-    # @api.model
-    # def create(self, vals):
-    #     if vals.get('name', _('New')) == _('New'):
-    #         vals['name'] = self.env['ir.sequence'].next_by_code('property.invoice') or _('New')
-    #     return super(PropertyInvoice, self).create(vals)
-
-    # @api.depends('invoice_line_ids.price_total')
-    # def _compute_amounts(self):
-    #     for invoice in self:
-    #         amount_total = 0.0
-    #         for line in invoice.invoice_line_ids:
-    #             amount_total += line.price_subtotal
-            
-    #         invoice.amount_untaxed = amount_total
-    #         invoice.amount_tax = 0.0
-    #         invoice.amount_total = amount_total
-    #         invoice.amount_residual = invoice.amount_total - invoice.amount_paid
-
-    # @api.depends('amount_total', 'amount_paid')
-    # def _compute_payment_state(self):
-    #     for invoice in self:
-    #         if invoice.amount_paid == 0:
-    #             invoice.payment_state = 'not_paid'
-    #         elif invoice.amount_paid >= invoice.amount_total:
-    #             invoice.payment_state = 'paid'
-    #         else:
-    #             invoice.payment_state = 'partial'
 
     @api.onchange('room_id')
     def _onchange_room_id(self):
@@ -149,7 +87,7 @@ class AccountInvoice(models.Model):
                     'quantity': 1,
                     'price_unit': self.agreement_id.deposit_amount,
                 })
-            
+                            
             self.invoice_line_ids = [(5, 0, 0)] + [(0, 0, line) for line in lines]
 
     @api.model

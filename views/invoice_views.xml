@@ -9,14 +9,14 @@
             <xpath expr="//group[1]//group[1]" position="inside">
                 <!-- <group> -->
                     <field name="tenant_id" readonly="1" force_save="1" options="{'no_create': True}" invisible="move_type not in ('out_invoice','out_refund')"/>
-                    <field name="property_id" options="{'no_create': True}"/>
-                    <field name="room_id" options="{'no_create': True}"/>
-                    <field name="agreement_id" options="{'no_create': True}" domain="[('room_id','=',room_id)]" invisible="move_type not in ('out_invoice','out_refund')"/>
+                    <field name="property_id" options="{'no_create': True}" readonly="state=='posted'"/>
+                    <field name="room_id" options="{'no_create': True}" readonly="state=='posted'"/>
+                    <field name="agreement_id" options="{'no_create': True}" readonly="state=='posted'" domain="[('room_id','=',room_id)]" invisible="move_type not in ('out_invoice','out_refund')"/>
                 <!-- </group> -->
                 <!-- <group> -->
-                    <field name="invoice_type" invisible="move_type not in ('out_invoice','out_refund')"/>
-                    <field name="period_from" invisible="move_type not in ('out_invoice','out_refund')"/>
-                    <field name="period_to" invisible="move_type not in ('out_invoice','out_refund')"/>
+                    <field name="invoice_type" invisible="move_type not in ('out_invoice','out_refund')" readonly="state=='posted'"/>
+                    <field name="period_from" invisible="move_type not in ('out_invoice','out_refund')" readonly="state=='posted'"/>
+                    <field name="period_to" invisible="move_type not in ('out_invoice','out_refund')" readonly="state=='posted'"/>
                     <field name="ref"/>
                 <!-- </group> -->
             </xpath>
