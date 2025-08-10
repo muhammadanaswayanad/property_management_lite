@@ -62,22 +62,6 @@
         <field name="groups" eval="[(4, ref('group_property_officer'))]"/>
     </record>
 
-    <!-- Expenses: Users can only see their own expenses -->
-    <record id="property_expense_rule_own" model="ir.rule">
-        <field name="name">Expenses: Own Expenses</field>
-        <field name="model_id" ref="model_property_expense"/>
-        <field name="domain_force">[('paid_by', '=', user.id)]</field>
-        <field name="groups" eval="[(4, ref('group_property_user'))]"/>
-    </record>
-
-    <!-- Expenses: Officers and above can see all -->
-    <record id="property_expense_rule_all" model="ir.rule">
-        <field name="name">Expenses: All Expenses</field>
-        <field name="model_id" ref="model_property_expense"/>
-        <field name="domain_force">[]</field>
-        <field name="groups" eval="[(4, ref('group_property_officer'))]"/>
-    </record>
-
     <!-- Tenants: All property users can access -->
     <record id="property_tenant_rule_all" model="ir.rule">
         <field name="name">Tenants: All Users</field>

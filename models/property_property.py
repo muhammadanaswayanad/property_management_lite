@@ -1,5 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from  datetime import timedelta
 
 
 class PropertyProperty(models.Model):
@@ -41,8 +42,8 @@ class PropertyProperty(models.Model):
     # Relations
     flat_ids = fields.One2many('property.flat', 'property_id', 'Flats')
     collection_ids = fields.One2many('property.collection', 'property_id', 'Collections')
-    expense_ids = fields.One2many('property.expense', 'property_id', 'Expenses')
-    
+    expense_ids = fields.One2many('account.move', 'property_id', 'Expenses', domain=[('move_type','in', ('in_invoice','in_refund'))])
+
     # Status
     active = fields.Boolean('Active', default=True)
     state = fields.Selection([
@@ -82,7 +83,7 @@ class PropertyProperty(models.Model):
             # Calculate as decimal (0.0 to 1.0) since view uses percentage widget
             record.occupancy_rate = (record.occupied_rooms / record.total_rooms) if record.total_rooms > 0 else 0
     
-    @api.depends('flat_ids.room_ids.rent_amount', 'expense_ids.amount')
+    # @api.depends('flat_ids.room_ids.rent_amount', 'expense_ids.amount_total')
     def _compute_financial_summary(self):
         for record in self:
             # Monthly rent income from occupied rooms
@@ -91,9 +92,9 @@ class PropertyProperty(models.Model):
             
             # Monthly expenses (average from last 12 months)
             expenses = record.expense_ids.filtered(
-                lambda e: e.date >= fields.Date.today().replace(day=1) - fields.timedelta(days=365)
+                lambda e: e.invoice_date >= fields.Date.today().replace(day=1) - timedelta(days=365)
             )
-            record.monthly_expenses = sum(expenses.mapped('amount')) / 12 if expenses else 0
+            record.monthly_expenses = sum(expenses.mapped('amount_total')) / 12 if expenses else 0
             
             # Monthly profit
             record.monthly_profit = record.monthly_rent_income - record.monthly_expenses

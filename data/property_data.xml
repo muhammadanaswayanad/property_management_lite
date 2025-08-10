@@ -82,15 +82,6 @@
         <field name="number_increment">1</field>
     </record>
 
-    <record id="seq_property_expense" model="ir.sequence">
-        <field name="name">Property Expense</field>
-        <field name="code">property.expense</field>
-        <field name="prefix">EXP</field>
-        <field name="padding">5</field>
-        <field name="number_next">1</field>
-        <field name="number_increment">1</field>
-    </record>
-
     <!-- Default sequences for the module -->
     <!-- Note: Default property manager should be assigned manually during setup -->
 </odoo>

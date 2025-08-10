@@ -35,8 +35,12 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_agreements" type="object" class="oe_stat_button" icon="fa-file-text">
-                            <field name="active_agreements_count" widget="statinfo" string="Active"/>
-                            <field name="total_agreements_count" widget="statinfo" string="Agreements"/>
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Active Agreements</span>
+                                <span class="o_stat_value">
+                                    <field name="active_agreements_count" decoration-success="1"/>/<field name="total_agreements_count"/>
+                                </span>
+                            </div>
                         </button>
                         <button name="action_view_collections" type="object" class="oe_stat_button" icon="fa-money">
                             <field name="total_paid" widget="statinfo" string="Total Paid"/>

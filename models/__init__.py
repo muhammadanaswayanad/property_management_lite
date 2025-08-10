@@ -5,13 +5,6 @@ from . import property_room_type
 from . import property_tenant
 from . import property_agreement
 from . import property_collection
-from . import property_expense
 from . import property_invoice
-from . import property_due_tracker
-from . import property_bank_transfer
-from . import property_deposit
-from . import property_landlord_payment
-from . import property_staff_salary
-from . import property_tenant_exit
 from . import property_dashboard
-from . import res_partner
+# from . import res_partner

@@ -114,18 +114,6 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Expenses" name="expenses">
-                            <field name="expense_ids" readonly="1">
-                                <list>
-                                    <field name="date"/>
-                                    <field name="name"/>
-                                    <field name="expense_type"/>
-                                    <field name="amount"/>
-                                    <field name="paid_by"/>
-                                    <field name="state"/>
-                                </list>
-                            </field>
-                        </page>
                     </notebook>
                 </sheet>
                 <chatter/>
